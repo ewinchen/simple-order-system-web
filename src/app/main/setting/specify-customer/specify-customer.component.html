@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div style="margin: 10px">
+
+      <div>
+        <button class="btn btn-primary" (click)="handleEdit()">Edit</button>
+        Specify Customers From FSRS
+        <div id="selectedCustomerGrid" style="margin-top:10px"></div>
+      </div>
+
+      <!-- <div>
+        <br>
+        Specify Customers From Style Package
+        <button class="btn btn-primary">Import</button>
+      </div> -->
+      <hr style="border: lightblue solid 1px">
+      <div>
+        <button class="btn btn-primary" (click)="syncUpKmisSetting()">Sync up</button>
+        Specify Customers From KMIS
+        <div id="kmisCustomerGrid" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
