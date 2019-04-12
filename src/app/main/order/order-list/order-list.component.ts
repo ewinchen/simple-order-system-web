@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../order.service';
 
 @Component({
   selector: 'app-order-list',
@@ -7,30 +8,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderListComponent implements OnInit {
 
+  isEditMode;
+
   cars: any[];
 
   cols: any[];
 
-  constructor() { }
+  selectedOrder;
+
+  constructor(private orderServie: OrderService) {
+    orderServie.isEditMode$.subscribe(res => this.isEditMode = res);
+  }
 
   ngOnInit() {
 
     this.cols = [
-      { field: 'vin', header: 'Vin' },
-      { field: 'year', header: 'Year' },
-      { field: 'brand', header: 'Brand' },
-      { field: 'color', header: 'Color' }
+      { field: 'orderNo', header: 'Order No.' },
+      { field: 'customer', header: 'Customer' },
+      { field: 'createDate', header: 'Create Date' },
+      { field: 'status', header: 'Status' }
     ];
 
     this.cars = [
-      { vin: '1', year: '2', brand: '3', color: '4' },
-      { vin: '1', year: '2', brand: '3', color: '4' },
-      { vin: '1', year: '2', brand: '3', color: '4' },
-      { vin: '1', year: '2', brand: '3', color: '4' },
-      { vin: '1', year: '2', brand: '3', color: '4' },
-      { vin: '1', year: '2', brand: '3', color: '4' },
-      { vin: '1', year: '2', brand: '3', color: '4' },
-    ]
+      { orderNo: '001', customer: 'Microsoft', createDate: '2019-04-12', status: 'NEW' },
+      { orderNo: '002', customer: 'Apple', createDate: '2019-04-12', status: 'SUBMITTED' },
+      { orderNo: '003', customer: 'Amazon', createDate: '2019-04-12', status: 'NEW' },
+      { orderNo: '004', customer: 'Google', createDate: '2019-04-12', status: 'NEW' },
+      { orderNo: '005', customer: 'Facebook', createDate: '2019-04-12', status: 'NEW' },
+      { orderNo: '006', customer: 'IBM', createDate: '2019-04-12', status: 'NEW' },
+      { orderNo: '007', customer: 'Intel', createDate: '2019-04-12', status: 'NEW' },
+      { orderNo: '008', customer: 'AMD', createDate: '2019-04-12', status: 'SUBMITTED' },
+    ];
+  }
+
+  onRowUnselect($event) {
+    setTimeout(() => {
+      this.selectedOrder = $event.data;
+    }, 1);
+  }
+
+  onRowSelect($event) {
+    this.orderServie.selectedOrder$.next($event.data);
   }
 
 }
