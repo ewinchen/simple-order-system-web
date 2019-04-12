@@ -1,0 +1,7 @@
+div {
+  padding: 1px;
+}
+
+:host ::ng-deep .ui-widget {
+  font-size: 12px;
+}
