@@ -22,6 +22,11 @@ const routes: Routes = [
         data: { menuName: 'Home' }
       },
       {
+        path: 'order',
+        loadChildren: './main/order/order.module#OrderModule',
+        data: { menuName: 'Order' }
+      },
+      {
         path: 'report',
         loadChildren: './main/report/report.module#ReportModule',
         data: { menuName: 'Report' }

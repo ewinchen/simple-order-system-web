@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'customer',
     component: SpecifyCustomerComponent,
-    data: { pageTitle: 'Customer' }
+    data: { menuName: 'Customer' }
   }
 ];
 

@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'authorization',
     component: AuthorizationComponent,
-    data: { pageTitle: 'Authorization' }
+    data: { menuName: 'Authorization' }
   }
 ];
 

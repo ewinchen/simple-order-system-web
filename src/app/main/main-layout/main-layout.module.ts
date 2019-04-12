@@ -17,7 +17,8 @@ import { UserSnapshotComponent } from './user-snapshot/user-snapshot.component';
     RouterModule,
 
     SharedModule,
-    AuthModule
+    AuthModule,
+
   ],
   declarations: [
     MainLayoutComponent,
