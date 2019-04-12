@@ -1,0 +1,15 @@
+button {
+  width: 70px;
+  display: inline-block;
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+div {
+  padding-bottom: 6px;
+  border-bottom: 1px solid lightgrey
+}
+
+div ::ng-deep .ui-button {
+  font-size: 11px;
+}
