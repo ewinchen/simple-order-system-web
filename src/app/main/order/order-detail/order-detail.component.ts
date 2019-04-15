@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from '../order.service';
+import { OrderService, Order } from '../order.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -10,8 +10,11 @@ export class OrderDetailComponent implements OnInit {
 
   isEditMode: boolean;
 
+  order: Order;
+
   constructor(private orderService: OrderService) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
+    orderService.selectedOrder$.subscribe(res => this.order = res);
   }
 
   ngOnInit() {

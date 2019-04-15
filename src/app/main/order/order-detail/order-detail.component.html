@@ -1,42 +1,42 @@
-<div class="ui-g ui-fluid">
+<div *ngIf="order" class="ui-g ui-fluid">
   <div class="ui-g-4">
     <span>Order No.</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.orderNo" />
   </div>
 
   <div class="ui-g-4">
     <span>Order Date</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.createDate" />
   </div>
 
   <div class="ui-g-4">
     <span>Customer</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.customer" />
   </div>
 
   <div class="ui-g-4">
     <span>Goods</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.goods" />
   </div>
 
   <div class="ui-g-4">
     <span>Quantity</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.quantity" />
   </div>
   <div class="ui-g-4">
     <span>Unit</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.unit" />
   </div>
   <div class="ui-g-4">
     <span>Creator</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.creator" />
   </div>
   <div class="ui-g-4">
     <span>Submitter</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.submitter" />
   </div>
   <div class="ui-g-4">
     <span>Status</span>
-    <input type="text" pInputText [readonly]="!isEditMode" />
+    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.status" />
   </div>
 </div>
