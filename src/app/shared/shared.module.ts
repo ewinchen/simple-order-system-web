@@ -6,13 +6,17 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TableModule } from 'primeng/table';
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const PrimengModule = [
   MenubarModule,
   ButtonModule,
   InputTextModule,
   BreadcrumbModule,
-  TableModule
+  TableModule,
+  BlockUIModule,
+  ProgressSpinnerModule,
 ];
 
 @NgModule({

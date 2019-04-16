@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MainLayoutService } from './main-layout.service';
 
 @Component({
   selector: 'app-layout',
@@ -7,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainLayoutComponent implements OnInit {
 
+  isBlock: boolean;
 
-  constructor() { }
+  constructor(private mainLayoutService: MainLayoutService) {
+    mainLayoutService.isBlock$.subscribe(res => this.isBlock = res);
+  }
 
   ngOnInit() {
   }

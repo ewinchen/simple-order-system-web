@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
+import { MainLayoutService } from '../../main-layout/main-layout.service';
 
 @Component({
   selector: 'app-order-list',
@@ -16,7 +17,7 @@ export class OrderListComponent implements OnInit {
 
   selectedOrder;
 
-  constructor(private orderServie: OrderService) {
+  constructor(private orderServie: OrderService, private mainLayoutService: MainLayoutService) {
     orderServie.isEditMode$.subscribe(res => this.isEditMode = res);
   }
 
@@ -49,6 +50,10 @@ export class OrderListComponent implements OnInit {
 
   onRowSelect($event) {
     this.orderServie.selectedOrder$.next($event.data);
+    this.mainLayoutService.isBlock$.next(true);
+    setTimeout(() => {
+      this.mainLayoutService.isBlock$.next(false);
+    }, 500);
   }
 
 }

@@ -1,12 +1,18 @@
 <div id="header">
   <app-menu></app-menu>
-  
+
 </div>
 
 <div id="breadcrumb">
   <app-breadcrumb></app-breadcrumb>
 </div>
 
-<div id="content">
+<div #content id="content">
   <router-outlet></router-outlet>
 </div>
+
+<p-blockUI [blocked]="isBlock">
+  <p-progressSpinner
+    [style]="{width: '80px', height: '80px', position: 'fixed', top: 'calc(50vh - 40px)', left: 'calc(50vw - 40px)'}">
+  </p-progressSpinner>
+</p-blockUI>
