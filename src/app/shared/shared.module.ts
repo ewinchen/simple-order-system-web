@@ -8,6 +8,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TableModule } from 'primeng/table';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuModule } from 'primeng/menu';
 
 const PrimengModule = [
   MenubarModule,
@@ -17,6 +19,8 @@ const PrimengModule = [
   TableModule,
   BlockUIModule,
   ProgressSpinnerModule,
+  SplitButtonModule,
+  MenuModule,
 ];
 
 @NgModule({

@@ -1,8 +1,24 @@
 <div>
-  <button [style.visibility]="handleBtnView(isEditMode, selectedOrder, 'New')" pButton type="button" label="New" (click)="onNew()"></button>
-  <button [style.visibility]="handleBtnView(isEditMode, selectedOrder, 'Modify')" pButton type="button" label="Modify" class="ui-button-info" (click)="onModify()"></button>
-  <button [style.visibility]="handleBtnView(isEditMode, selectedOrder, 'Cancel')" pButton type="button" label="Cancel" class="ui-button-secondary" (click)="onCancel()"></button>
-  <button [style.visibility]="handleBtnView(isEditMode, selectedOrder, 'Save')" pButton type="button" label="Save" class="ui-button-success" (click)="onSave()"></button>
-  <button [style.visibility]="handleBtnView(isEditMode, selectedOrder, 'Submit')" pButton type="button" label="Submit" class="ui-button-warning"></button>
-  <button [style.visibility]="handleBtnView(isEditMode, selectedOrder, 'Delete')" pButton type="button" label="Delete" class="ui-button-danger"></button>
+  <button [style.visibility]="handleBtnView('New')" pButton type="button" label="New" (click)="onNew()"></button>
+
+  <button [style.visibility]="handleBtnView('Modify')" pButton type="button" label="Modify" class="ui-button-info"
+    (click)="onModify()"></button>
+
+  <button [style.visibility]="handleBtnView('Cancel')" pButton type="button" label="Cancel" class="ui-button-secondary"
+    (click)="onCancel()"></button>
+
+  <button [style.visibility]="handleBtnView('Save')" pButton type="button" label="Save" class="ui-button-success"
+    (click)="onSave()"></button>
+
+  <button [style.visibility]="handleBtnView('Submit')" pButton type="button" label="Submit" class="ui-button-warning"
+    (click)="onSubmit()"></button>
+
+  <button [style.visibility]="handleBtnView('Unsubmit')" pButton type="button" label="Unsubmit"
+    class="ui-button-warning" (click)="onUnsubmit()"></button>
+
+  <button [style.visibility]="handleBtnView('Delete')" pButton type="button" label="Delete"
+    class="ui-button-danger"></button>
+
+  <p-menu #menu [popup]="true" [model]="popupItems"></p-menu>
+  <button [style.visibility]="handleBtnView('Delete')" style="float: right" type="button" pButton icon="pi pi-ellipsis-v" class="ui-button-secondary" (click)="menu.toggle($event)"></button>
 </div>

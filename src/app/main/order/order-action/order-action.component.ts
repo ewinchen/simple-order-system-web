@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
+import { MainLayoutService } from '../../main-layout/main-layout.service';
 
 @Component({
   selector: 'app-order-action',
@@ -12,7 +13,16 @@ export class OrderActionComponent implements OnInit {
 
   selectedOrder: any;
 
-  constructor(private orderService: OrderService) {
+  get popupItems() {
+    if (!this.selectedOrder) {
+      return [];
+    }
+    if (this.selectedOrder.status === 'NEW') {
+      return [{ label: 'Delete', icon: 'pi pi-times' }];
+    }
+  }
+
+  constructor(private orderService: OrderService, private layoutService: MainLayoutService) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
     orderService.selectedOrder$.subscribe(res => this.selectedOrder = res);
   }
@@ -29,55 +39,97 @@ export class OrderActionComponent implements OnInit {
   }
 
   onCancel() {
-    this.orderService.isEditMode$.next(false);
+    this.layoutService.isBlock$.next(true);
+    setTimeout(() => {
+      this.orderService.isEditMode$.next(false);
+      this.layoutService.isBlock$.next(false);
+    }, 200);
 
   }
 
   onSave() {
-    this.orderService.isEditMode$.next(false);
+    this.layoutService.isBlock$.next(true);
+    setTimeout(() => {
+      this.orderService.isEditMode$.next(false);
+      this.layoutService.isBlock$.next(false);
+    }, 200);
   }
 
-  handleBtnView(isEditMode, selectedOrder, buttonName) {
+  onSubmit() {
+    this.layoutService.isBlock$.next(true);
+    setTimeout(() => {
+      this.selectedOrder.status = 'SUBMITTED';
+      this.layoutService.isBlock$.next(false);
+    }, 200);
+  }
+
+  onUnsubmit() {
+    this.layoutService.isBlock$.next(true);
+    setTimeout(() => {
+      this.selectedOrder.status = 'NEW';
+      this.layoutService.isBlock$.next(false);
+    }, 200);
+  }
+
+  handleBtnView(buttonName) {
     switch (buttonName) {
       case 'New':
-        if (isEditMode) {
+        if (this.isEditMode) {
           return 'hidden';
         }
         return 'visible';
       case 'Modify':
-        if (!selectedOrder) {
+        if (!this.selectedOrder) {
           return 'hidden';
         }
-        if (isEditMode) {
+        if (this.isEditMode) {
           return 'hidden';
         }
         return 'visible';
 
       case 'Cancel':
-        if (!isEditMode) {
+        if (!this.isEditMode) {
           return 'hidden';
         }
         return 'visible';
 
       case 'Save':
-        if (!isEditMode) {
+        if (!this.isEditMode) {
           return 'hidden';
         }
         return 'visible';
       case 'Submit':
-        if (!selectedOrder) {
+        if (!this.selectedOrder) {
           return 'hidden';
         }
-        if (isEditMode) {
+        if (this.isEditMode) {
+          return 'hidden';
+        }
+        if (this.selectedOrder.status === 'SUBMITTED') {
+          return 'hidden';
+        }
+        return 'visible';
+
+      case 'Unsubmit':
+        if (!this.selectedOrder) {
+          return 'hidden';
+        }
+        if (this.isEditMode) {
+          return 'hidden';
+        }
+        if (this.selectedOrder.status !== 'SUBMITTED') {
           return 'hidden';
         }
         return 'visible';
 
       case 'Delete':
-        if (!selectedOrder) {
+        if (!this.selectedOrder) {
           return 'hidden';
         }
-        if (isEditMode) {
+        if (this.isEditMode) {
+          return 'hidden';
+        }
+        if (this.selectedOrder.status !== 'NEW') {
           return 'hidden';
         }
         return 'visible';

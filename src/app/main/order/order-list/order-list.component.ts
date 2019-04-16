@@ -53,7 +53,7 @@ export class OrderListComponent implements OnInit {
     this.mainLayoutService.isBlock$.next(true);
     setTimeout(() => {
       this.mainLayoutService.isBlock$.next(false);
-    }, 500);
+    }, 300);
   }
 
 }
