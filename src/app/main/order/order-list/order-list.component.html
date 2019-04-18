@@ -1,6 +1,6 @@
 <div [style.display]="isEditMode ? 'none' : 'block'">
-  <p-table [columns]="cols" [value]="cars" [rows]="15" [paginator]="true" [scrollable]="true" scrollHeight="150px"
-    selectionMode="single" [(selection)]="selectedOrder" dataKey="orderNo" (onRowUnselect)="onRowUnselect($event)"
+  <p-table [columns]="cols" [value]="orderList" [rows]="15" [paginator]="true" [scrollable]="true" scrollHeight="150px"
+    selectionMode="single" [(selection)]="orderService.orderListSelected" dataKey="orderNo" (onRowUnselect)="onRowUnselect($event)"
     (onRowSelect)="onRowSelect($event)">
     <ng-template pTemplate="header" let-columns>
       <tr>

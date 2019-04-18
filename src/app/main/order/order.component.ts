@@ -15,6 +15,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.orderService.isEditMode$.next(false);
-    this.orderService.selectedOrder$.next(false);
+    this.orderService.orderList$.next(undefined);
+    this.orderService.orderDetail$.next(undefined);
+    this.orderService.orderListSelected = undefined;
   }
 }

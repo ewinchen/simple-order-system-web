@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
+import { UtilService } from 'src/app/shared/service/util.service';
 
 @Component({
   selector: 'app-order-action',
@@ -11,20 +12,20 @@ export class OrderActionComponent implements OnInit {
 
   isEditMode: boolean;
 
-  selectedOrder: any;
+  orderDetail: any;
 
   get popupItems() {
-    if (!this.selectedOrder) {
+    if (!this.orderDetail) {
       return [];
     }
-    if (this.selectedOrder.status === 'NEW') {
+    if (this.orderDetail.status === 'NEW') {
       return [{ label: 'Delete', icon: 'pi pi-times' }];
     }
   }
 
-  constructor(private orderService: OrderService, private layoutService: MainLayoutService) {
+  constructor(private orderService: OrderService, private layoutService: MainLayoutService, private util: UtilService) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
-    orderService.selectedOrder$.subscribe(res => this.selectedOrder = res);
+    orderService.orderDetail$.subscribe(res => this.orderDetail = res);
   }
 
   ngOnInit() {
@@ -32,6 +33,10 @@ export class OrderActionComponent implements OnInit {
 
   onNew() {
     this.orderService.isEditMode$.next(true);
+    this.orderService.orderListSelected = undefined;
+    this.orderService.orderDetail$.next(
+      { orderNo: '', customer: '', createDate: '', goods: '', quantity: undefined, unit: '', creator: '', submitter: '', status: '' },
+    );
   }
 
   onModify() {
@@ -41,6 +46,11 @@ export class OrderActionComponent implements OnInit {
   onCancel() {
     this.layoutService.isBlock$.next(true);
     setTimeout(() => {
+      if (this.orderService.orderListSelected) {
+        this.orderService.fetchOrderDetail(this.orderService.orderListSelected);
+      } else {
+        this.orderService.orderDetail$.next(null);
+      }
       this.orderService.isEditMode$.next(false);
       this.layoutService.isBlock$.next(false);
     }, 200);
@@ -50,6 +60,7 @@ export class OrderActionComponent implements OnInit {
   onSave() {
     this.layoutService.isBlock$.next(true);
     setTimeout(() => {
+      this.orderService.updateOrder();
       this.orderService.isEditMode$.next(false);
       this.layoutService.isBlock$.next(false);
     }, 200);
@@ -58,7 +69,7 @@ export class OrderActionComponent implements OnInit {
   onSubmit() {
     this.layoutService.isBlock$.next(true);
     setTimeout(() => {
-      this.selectedOrder.status = 'SUBMITTED';
+      this.orderDetail.status = 'SUBMITTED';
       this.layoutService.isBlock$.next(false);
     }, 200);
   }
@@ -66,7 +77,7 @@ export class OrderActionComponent implements OnInit {
   onUnsubmit() {
     this.layoutService.isBlock$.next(true);
     setTimeout(() => {
-      this.selectedOrder.status = 'NEW';
+      this.orderDetail.status = 'NEW';
       this.layoutService.isBlock$.next(false);
     }, 200);
   }
@@ -79,7 +90,7 @@ export class OrderActionComponent implements OnInit {
         }
         return 'visible';
       case 'Modify':
-        if (!this.selectedOrder) {
+        if (!this.orderDetail) {
           return 'hidden';
         }
         if (this.isEditMode) {
@@ -99,37 +110,37 @@ export class OrderActionComponent implements OnInit {
         }
         return 'visible';
       case 'Submit':
-        if (!this.selectedOrder) {
+        if (!this.orderDetail) {
           return 'hidden';
         }
         if (this.isEditMode) {
           return 'hidden';
         }
-        if (this.selectedOrder.status === 'SUBMITTED') {
+        if (this.orderDetail.status === 'SUBMITTED') {
           return 'hidden';
         }
         return 'visible';
 
       case 'Unsubmit':
-        if (!this.selectedOrder) {
+        if (!this.orderDetail) {
           return 'hidden';
         }
         if (this.isEditMode) {
           return 'hidden';
         }
-        if (this.selectedOrder.status !== 'SUBMITTED') {
+        if (this.orderDetail.status !== 'SUBMITTED') {
           return 'hidden';
         }
         return 'visible';
 
       case 'Delete':
-        if (!this.selectedOrder) {
+        if (!this.orderDetail) {
           return 'hidden';
         }
         if (this.isEditMode) {
           return 'hidden';
         }
-        if (this.selectedOrder.status !== 'NEW') {
+        if (this.orderDetail.status !== 'NEW') {
           return 'hidden';
         }
         return 'visible';
@@ -138,4 +149,5 @@ export class OrderActionComponent implements OnInit {
         break;
     }
   }
+
 }

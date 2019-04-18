@@ -1,42 +1,42 @@
-<div *ngIf="order" class="ui-g ui-fluid">
+<div *ngIf="orderForm" [formGroup]="orderForm" class="ui-g ui-fluid">
   <div class="ui-g-4">
     <span>Order No.</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.orderNo" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="orderNo" />
   </div>
 
   <div class="ui-g-4">
     <span>Order Date</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.createDate" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="createDate" />
   </div>
 
   <div class="ui-g-4">
     <span>Customer</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.customer" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="customer" />
   </div>
 
   <div class="ui-g-4">
     <span>Goods</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.goods" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="goods" />
   </div>
 
   <div class="ui-g-4">
     <span>Quantity</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.quantity" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="quantity" />
   </div>
   <div class="ui-g-4">
     <span>Unit</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.unit" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="unit" />
   </div>
   <div class="ui-g-4">
     <span>Creator</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.creator" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="creator" />
   </div>
   <div class="ui-g-4">
     <span>Submitter</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.submitter" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="submitter" />
   </div>
   <div class="ui-g-4">
     <span>Status</span>
-    <input type="text" pInputText [readonly]="!isEditMode" [(ngModel)]="order.status" />
+    <input type="text" pInputText [readonly]="!isEditMode" formControlName="status" />
   </div>
 </div>
