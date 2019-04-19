@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UtilService } from 'src/app/shared/service/util.service';
+import { HttpClient } from '@angular/common/http';
 
 export interface Order {
   orderNo: string;
@@ -55,24 +56,35 @@ export class OrderService {
 
   orderDetail$ = new BehaviorSubject<Order>(undefined);
 
-  constructor(private util: UtilService) { }
+  constructor(private util: UtilService, private http: HttpClient) { }
 
   fetchOrderDetail(data) {
-    this.orderDetail$.next(this.util.clone(orderDetailData.find(item => item.orderNo === data.orderNo)));
+    this.http.get<any>(`http://localhost:8080/order/${data.id}`).subscribe(res => {
+
+      this.orderDetail$.next(res.data);
+    });
   }
 
   fetchOrderList() {
-    this.orderList$.next(this.util.clone(orderListData));
+    this.http.get<any>('http://localhost:8080/order').subscribe(res => {
+
+      this.orderList$.next(res.data);
+    });
   }
 
   updateOrder() {
     // 拿到当前界面数据
     const data = this.orderDetail$.getValue();
-    // 修改数据源
-    Object.assign(orderDetailData.find(item => item.orderNo === data.orderNo), data);
-    this.util.cover(orderListData.find(item => item.orderNo === data.orderNo), data);
+    if (this.orderListSelected) {
+      // 修改
+      this.http.put<any>('http://localhost:8080/order', data).subscribe();
+    } else {
+      // 新增
+      this.http.post<any>('http://localhost:8080/order', data).subscribe();
+    }
     // 更新相关界面的数据
-    this.orderList$.next(orderListData);
-    this.util.cover(this.orderListSelected, data);
+    this.fetchOrderList();
+
+    Object.assign(this.orderListSelected, data);
   }
 }
