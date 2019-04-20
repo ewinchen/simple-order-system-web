@@ -4,8 +4,9 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MainLayoutModule } from './main/main-layout/main-layout.module';
+import { ErrorInterceptor } from './shared/intercepter/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { MainLayoutModule } from './main/main-layout/main-layout.module';
     MainLayoutModule
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
