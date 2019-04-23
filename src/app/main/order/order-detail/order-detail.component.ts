@@ -26,8 +26,8 @@ export class OrderDetailComponent implements OnInit {
           goods: [order.goods],
           quantity: [order.quantity],
           unit: [order.unit],
-          creator: [order.creator],
-          submitter: [order.submitter],
+          createBy: [order.createBy],
+          submitBy: [order.submitBy],
           status: [order.status],
         });
         this.orderForm.valueChanges.subscribe(value => Object.assign(this.orderService.orderDetail$.getValue(), value));
@@ -38,19 +38,6 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orderService.fetchOrderList();
-  }
-
-  onSubmit() {
-    console.log(this.orderForm.value);
-  }
-
-  onPatchUpdate() {
-    this.orderForm.patchValue({
-      orderNo: '002',
-      customer: 'Microsoft',
-      status: 'SUBMITTED'
-    });
   }
 
 }

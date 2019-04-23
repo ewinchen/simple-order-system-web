@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
 import { UtilService } from 'src/app/shared/service/util.service';
+import { Observable } from 'rxjs';
+import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
 
 @Component({
   selector: 'app-order-action',
@@ -35,7 +37,7 @@ export class OrderActionComponent implements OnInit {
     this.orderService.isEditMode$.next(true);
     this.orderService.orderListSelected = undefined;
     this.orderService.orderDetail$.next(
-      { orderNo: '', customer: '', createDate: '', goods: '', quantity: undefined, unit: '', creator: '', submitter: '', status: '' },
+      { orderNo: '', customer: '', createDate: '', goods: '', quantity: undefined, unit: '', createBy: '', submitBy: '', status: '' },
     );
   }
 
@@ -45,25 +47,56 @@ export class OrderActionComponent implements OnInit {
 
   onCancel() {
     this.layoutService.isBlock$.next(true);
-    setTimeout(() => {
-      if (this.orderService.orderListSelected) {
-        this.orderService.fetchOrderDetail(this.orderService.orderListSelected);
-      } else {
-        this.orderService.orderDetail$.next(null);
-      }
+    if (this.orderService.orderListSelected) {
+      // 修改状态
+      this.orderService.getOrder(this.orderService.orderListSelected.id).subscribe(
+        () => {
+          this.orderService.isEditMode$.next(false);
+          this.layoutService.isBlock$.next(false);
+        },
+        (err: ErrorEntity) => {
+          alert(err.errMsg);
+          this.layoutService.isBlock$.next(false);
+        },
+      );
+    } else {
+      // 新增状态
+      this.orderService.orderDetail$.next(null);
       this.orderService.isEditMode$.next(false);
       this.layoutService.isBlock$.next(false);
-    }, 200);
+    }
 
   }
 
   onSave() {
     this.layoutService.isBlock$.next(true);
-    setTimeout(() => {
-      this.orderService.updateOrder();
-      this.orderService.isEditMode$.next(false);
-      this.layoutService.isBlock$.next(false);
-    }, 200);
+    if (!this.orderService.orderListSelected) {
+      // 新增
+      this.orderService.createOrder().subscribe(
+        () => {
+          this.orderService.isEditMode$.next(false);
+          this.layoutService.isBlock$.next(false);
+        },
+        (err: ErrorEntity) => {
+          alert(err.errMsg);
+          this.layoutService.isBlock$.next(false);
+
+        }
+      );
+    } else {
+      // 修改
+      this.orderService.updateOrder().subscribe(
+        () => {
+          this.orderService.isEditMode$.next(false);
+          this.layoutService.isBlock$.next(false);
+
+        },
+        (err: ErrorEntity) => {
+          alert(err.errMsg);
+          this.layoutService.isBlock$.next(false);
+        }
+      );
+    }
   }
 
   onSubmit() {

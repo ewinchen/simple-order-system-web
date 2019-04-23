@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
+import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
 
 @Component({
   selector: 'app-order-list',
@@ -20,13 +21,18 @@ export class OrderListComponent implements OnInit {
     { field: 'status', header: 'Status' }
   ];
 
-  constructor(public orderService: OrderService, private mainLayoutService: MainLayoutService) {
+  constructor(public orderService: OrderService, private layout: MainLayoutService) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
     orderService.orderList$.subscribe(res => this.orderList = res);
   }
 
   ngOnInit() {
-    this.orderService.fetchOrderList();
+    this.orderService.listOrder().subscribe(
+      undefined,
+      (err: ErrorEntity) => {
+        alert(err.errMsg);
+      }
+    );
   }
 
   onRowUnselect($event) {
@@ -36,11 +42,14 @@ export class OrderListComponent implements OnInit {
   }
 
   onRowSelect($event) {
-    this.mainLayoutService.isBlock$.next(true);
-    setTimeout(() => {
-      this.orderService.fetchOrderDetail($event.data);
-      this.mainLayoutService.isBlock$.next(false);
-    }, 300);
+    this.layout.isBlock$.next(true);
+    this.orderService.getOrder($event.data.id).subscribe(
+      () => this.layout.isBlock$.next(false),
+      (err: ErrorEntity) => {
+        alert(err.errMsg);
+        this.layout.isBlock$.next(false);
+      }
+    );
   }
 
 }
