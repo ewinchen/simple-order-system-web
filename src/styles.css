@@ -5,5 +5,5 @@ html, body {
 }
 
 body .ui-widget-overlay {
-  background-color: rgba(0, 0, 0, 0.050) !important;
+  background-color: rgba(0, 0, 0, 0) !important;
 }

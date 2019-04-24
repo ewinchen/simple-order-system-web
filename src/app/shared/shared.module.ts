@@ -10,6 +10,7 @@ import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuModule } from 'primeng/menu';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 const PrimengModule = [
   MenubarModule,
@@ -21,6 +22,7 @@ const PrimengModule = [
   ProgressSpinnerModule,
   SplitButtonModule,
   MenuModule,
+  OverlayPanelModule
 ];
 
 @NgModule({

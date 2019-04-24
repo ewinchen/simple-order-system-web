@@ -1,14 +1,22 @@
 <div>
+  <span style="padding: 0 12px">
+    <button id="filterBtn" class="ui-button-secondary" [style.visibility]="handleBtnView('Search')" pButton
+      type="button" [icon]="hasFilterValue ? 'pi pi-filter' : 'pi pi-angle-down'"
+      (click)="filterPanel.toggle($event)"></button>
+    <button id="searchBtn" class="ui-button-secondary" #searchBtn [style.visibility]="handleBtnView('Search')" pButton
+      type="button" label="Search"></button>
+  </span>
+
   <button [style.visibility]="handleBtnView('New')" pButton type="button" label="New" (click)="onNew()"></button>
 
   <button [style.visibility]="handleBtnView('Modify')" pButton type="button" label="Modify" class="ui-button-info"
     (click)="onModify()"></button>
 
-  <button [style.visibility]="handleBtnView('Cancel')" pButton type="button" label="Cancel" class="ui-button-secondary"
-    (click)="onCancel()"></button>
-
   <button [style.visibility]="handleBtnView('Save')" pButton type="button" label="Save" class="ui-button-success"
     (click)="onSave()"></button>
+
+  <button [style.visibility]="handleBtnView('Cancel')" pButton type="button" label="Cancel" class="ui-button-secondary"
+    (click)="onCancel()"></button>
 
   <button [style.visibility]="handleBtnView('Submit')" pButton type="button" label="Submit" class="ui-button-warning"
     (click)="onSubmit()"></button>
@@ -16,10 +24,60 @@
   <button [style.visibility]="handleBtnView('Unsubmit')" pButton type="button" label="Unsubmit"
     class="ui-button-warning" (click)="onUnsubmit()"></button>
 
-  <button [style.visibility]="handleBtnView('Delete')" pButton type="button" label="Delete"
-    class="ui-button-danger"></button>
-
   <p-menu #menu [popup]="true" [model]="popupItems"></p-menu>
-  <button [style.visibility]="handleBtnView('Delete')" style="float: right" type="button" pButton
-    icon="pi pi-ellipsis-v" class="ui-button-secondary" (click)="menu.toggle($event)"></button>
+  <button [style.visibility]="handleBtnView('Popup')" style="float: right" type="button" pButton icon="pi pi-ellipsis-v"
+    class="ui-button-secondary" (click)="menu.toggle($event)"></button>
 </div>
+
+<p-overlayPanel #filterPanel [showCloseIcon]="true">
+  <div [formGroup]="filterForm" class="ui-fluid" style="width: 90vw">
+    <button pButton label="Clear" (click)="onClearFilter()"></button>
+    <div class="ui-g">
+      <div class="ui-g-4">
+        <span>Order No.</span>
+        <input type="text" pInputText formControlName="orderNo" />
+      </div>
+
+      <div class="ui-g-4">
+        <span>Order Date</span>
+        <input type="text" pInputText formControlName="createDate" />
+      </div>
+
+      <div class="ui-g-4">
+        <span>Customer</span>
+        <input type="text" pInputText formControlName="customer" />
+      </div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-4">
+        <span>Goods</span>
+        <input type="text" pInputText formControlName="goods" />
+      </div>
+      <div class="ui-g-4">
+        <span>Quantity</span>
+        <input type="text" pInputText formControlName="quantity" />
+      </div>
+      <div class="ui-g-4">
+        <span>Unit</span>
+        <input type="text" pInputText formControlName="unit" />
+      </div>
+    </div>
+
+    <div class="ui-g">
+      <div class="ui-g-4">
+        <span>Creator</span>
+        <input type="text" pInputText formControlName="createBy" />
+      </div>
+      <div class="ui-g-4">
+        <span>Submitter</span>
+        <input type="text" pInputText formControlName="submitBy" />
+      </div>
+      <div class="ui-g-4">
+        <span>Status</span>
+        <input type="text" pInputText formControlName="status" />
+      </div>
+    </div>
+
+  </div>
+</p-overlayPanel>

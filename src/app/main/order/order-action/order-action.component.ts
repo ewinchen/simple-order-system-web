@@ -4,6 +4,7 @@ import { MainLayoutService } from '../../main-layout/main-layout.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { Observable } from 'rxjs';
 import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-order-action',
@@ -16,6 +17,18 @@ export class OrderActionComponent implements OnInit {
 
   orderDetail: any;
 
+  filterForm: FormGroup;
+
+  get hasFilterValue() {
+    let hasFilterValue = false;
+    for (const key of Object.keys(this.filterForm.value)) {
+      if (this.filterForm.value[key]) {
+        hasFilterValue = true;
+      }
+    }
+    return hasFilterValue;
+  }
+
   get popupItems() {
     if (!this.orderDetail) {
       return [];
@@ -25,9 +38,25 @@ export class OrderActionComponent implements OnInit {
     }
   }
 
-  constructor(private orderService: OrderService, private layoutService: MainLayoutService, private util: UtilService) {
+  constructor(
+    private orderService: OrderService,
+    private layoutService: MainLayoutService,
+    private util: UtilService,
+    private fb: FormBuilder
+  ) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
     orderService.orderDetail$.subscribe(res => this.orderDetail = res);
+    this.filterForm = fb.group({
+      orderNo: '',
+      createDate: '',
+      customer: '',
+      goods: '',
+      quantity: '',
+      unit: '',
+      createBy: '',
+      submitBy: '',
+      status: '',
+    });
   }
 
   ngOnInit() {
@@ -115,6 +144,10 @@ export class OrderActionComponent implements OnInit {
     }, 200);
   }
 
+  onClearFilter() {
+    this.filterForm.reset();
+  }
+
   handleBtnView(buttonName) {
     switch (buttonName) {
       case 'New':
@@ -166,14 +199,17 @@ export class OrderActionComponent implements OnInit {
         }
         return 'visible';
 
-      case 'Delete':
+      case 'Search':
+        if (this.isEditMode) {
+          return 'hidden';
+        }
+        return 'visible';
+
+      case 'Popup':
         if (!this.orderDetail) {
           return 'hidden';
         }
         if (this.isEditMode) {
-          return 'hidden';
-        }
-        if (this.orderDetail.status !== 'NEW') {
           return 'hidden';
         }
         return 'visible';
