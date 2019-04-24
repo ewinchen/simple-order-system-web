@@ -71,6 +71,12 @@ export class OrderService {
     );
   }
 
+  searchOrder(condtion) {
+    return this.http.post<any>('http://localhost:8080/order-search', condtion).pipe(
+      tap(res => this.orderList$.next(res.data.recordset))
+    );
+  }
+
   updateOrder() {
     const data = this.orderDetail$.getValue() as any;
     return this.http.put<any>('http://localhost:8080/order', data).pipe(
