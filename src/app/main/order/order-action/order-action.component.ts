@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { Observable } from 'rxjs';
 import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-order-action',
@@ -38,6 +39,8 @@ export class OrderActionComponent implements OnInit {
     }
   }
 
+  @ViewChild('filterPanel') filterPanel: OverlayPanel;
+
   constructor(
     private orderService: OrderService,
     private layoutService: MainLayoutService,
@@ -46,16 +49,16 @@ export class OrderActionComponent implements OnInit {
   ) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
     orderService.orderDetail$.subscribe(res => this.orderDetail = res);
-    this.filterForm = fb.group({
-      orderNo: '',
-      createDate: '',
-      customer: '',
-      goods: '',
-      quantity: '',
-      unit: '',
-      createBy: '',
-      submitBy: '',
-      status: '',
+    orderService.orderFilter$.subscribe(res => {
+      this.filterForm = fb.group(res);
+      this.filterForm.valueChanges.subscribe(value => {
+        for (const key of Object.keys(value)) {
+          if (value[key] === '') {
+            value[key] = null;
+          }
+        }
+        this.orderService.orderFilter$.next(value);
+      });
     });
   }
 
@@ -146,6 +149,13 @@ export class OrderActionComponent implements OnInit {
 
   onClearFilter() {
     this.filterForm.reset();
+  }
+
+  onSearchOrder() {
+    this.orderService.orderSearchEmitter$.next(true);
+    this.orderService.orderListSelected = null;
+    this.orderService.orderDetail$.next(undefined);
+    this.filterPanel.hide();
   }
 
   handleBtnView(buttonName) {

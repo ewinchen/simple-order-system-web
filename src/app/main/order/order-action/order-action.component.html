@@ -1,11 +1,7 @@
 <div>
-  <span style="padding: 0 12px">
-    <button id="filterBtn" class="ui-button-secondary" [style.visibility]="handleBtnView('Search')" pButton
-      type="button" [icon]="hasFilterValue ? 'pi pi-filter' : 'pi pi-angle-down'"
-      (click)="filterPanel.toggle($event)"></button>
-    <button id="searchBtn" class="ui-button-secondary" #searchBtn [style.visibility]="handleBtnView('Search')" pButton
-      type="button" label="Search"></button>
-  </span>
+  <button class="ui-button-secondary" [style.visibility]="handleBtnView('Search')" pButton
+    type="button" [icon]="hasFilterValue ? 'pi pi-filter' : 'pi pi-angle-down'"
+    (click)="filterPanel.toggle($event)" label="Filter"></button>
 
   <button [style.visibility]="handleBtnView('New')" pButton type="button" label="New" (click)="onNew()"></button>
 
@@ -29,49 +25,37 @@
     class="ui-button-secondary" (click)="menu.toggle($event)"></button>
 </div>
 
-<p-overlayPanel #filterPanel [showCloseIcon]="true">
+<p-overlayPanel #filterPanel [showCloseIcon]="true" (keydown)="$event.keyCode === 13 ? onSearchOrder() : undefined">
   <div [formGroup]="filterForm" class="ui-fluid" style="width: 90vw">
-    <button pButton label="Clear" (click)="onClearFilter()"></button>
+    <button pButton class="ui-button-secondary" label="Clear" (click)="onClearFilter()" icon="pi pi-replay"></button>
+    <button class="ui-button-secondary" pButton type="button" icon="pi pi-search" label="Search"
+      (click)="onSearchOrder()"></button>
     <div class="ui-g">
+      <div class="ui-g-4">
+        <span>Begin Date</span>
+        <input type="text" pInputText formControlName="beginDate" />
+      </div>
+
+      <div class="ui-g-4">
+        <span>End Date</span>
+        <input type="text" pInputText formControlName="endDate" />
+      </div>
+
       <div class="ui-g-4">
         <span>Order No.</span>
         <input type="text" pInputText formControlName="orderNo" />
       </div>
 
-      <div class="ui-g-4">
-        <span>Order Date</span>
-        <input type="text" pInputText formControlName="createDate" />
-      </div>
+    </div>
 
+    <div class="ui-g">
       <div class="ui-g-4">
         <span>Customer</span>
         <input type="text" pInputText formControlName="customer" />
       </div>
-    </div>
-
-    <div class="ui-g">
       <div class="ui-g-4">
-        <span>Goods</span>
-        <input type="text" pInputText formControlName="goods" />
-      </div>
-      <div class="ui-g-4">
-        <span>Quantity</span>
-        <input type="text" pInputText formControlName="quantity" />
-      </div>
-      <div class="ui-g-4">
-        <span>Unit</span>
-        <input type="text" pInputText formControlName="unit" />
-      </div>
-    </div>
-
-    <div class="ui-g">
-      <div class="ui-g-4">
-        <span>Creator</span>
+        <span>Create By</span>
         <input type="text" pInputText formControlName="createBy" />
-      </div>
-      <div class="ui-g-4">
-        <span>Submitter</span>
-        <input type="text" pInputText formControlName="submitBy" />
       </div>
       <div class="ui-g-4">
         <span>Status</span>

@@ -20,6 +20,7 @@ export class OrderDetailComponent implements OnInit {
       if (res) {
         const order = res as Order;
         this.orderForm = this.formBuilder.group({
+          id: [order.id],
           orderNo: [order.orderNo, Validators.required],
           createDate: [order.createDate],
           customer: [order.customer],
@@ -30,7 +31,7 @@ export class OrderDetailComponent implements OnInit {
           submitBy: [order.submitBy],
           status: [order.status],
         });
-        this.orderForm.valueChanges.subscribe(value => Object.assign(this.orderService.orderDetail$.getValue(), value));
+        this.orderForm.valueChanges.subscribe(value => this.orderService.orderDetail$.next(value));
       } else {
         this.orderForm = undefined;
       }

@@ -1,8 +1,9 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
 import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
 import { LazyLoadEvent } from 'primeng/api';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-order-list',
@@ -26,9 +27,12 @@ export class OrderListComponent implements OnInit {
 
   loading = true;
 
+  @ViewChild('table') orderListTable: Table;
+
   constructor(public orderService: OrderService, private layout: MainLayoutService) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);
     orderService.orderList$.subscribe(res => this.orderList = res);
+    orderService.orderSearchEmitter$.subscribe(() => this.orderListTable.reset());
   }
 
   ngOnInit() {
@@ -59,7 +63,12 @@ export class OrderListComponent implements OnInit {
 
   onLazyLoad($event: LazyLoadEvent) {
     this.loading = true;
-    this.orderService.searchOrder({ pageSize: $event.rows, pageNum: $event.first / $event.rows + 1 }).subscribe(
+    const condition = Object.assign(
+      {},
+      this.orderService.orderFilter$.getValue(),
+      { pageSize: $event.rows, pageNum: $event.first / $event.rows + 1 }
+    );
+    this.orderService.searchOrder(condition).subscribe(
       (res) => {
         this.loading = false;
         this.totalRecords = res.data.total;

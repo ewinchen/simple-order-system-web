@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
 export interface Order {
+  id?: number;
   orderNo: string;
   createDate: Date | string;
   customer: string;
@@ -53,9 +54,20 @@ export class OrderService {
 
   orderList$ = new BehaviorSubject(undefined);
 
+  orderFilter$ = new BehaviorSubject({
+    beginDate: null,
+    endDate: null,
+    orderNo: null,
+    customer: null,
+    createBy: null,
+    status: 'NEW',
+  });
+
   orderListSelected: any;
 
   orderDetail$ = new BehaviorSubject<Order>(undefined);
+
+  orderSearchEmitter$ = new Subject();
 
   constructor(private util: UtilService, private http: HttpClient) { }
 
