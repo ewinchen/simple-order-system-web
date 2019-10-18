@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MainLayoutModule } from './main/main-layout/main-layout.module';
 import { ErrorInterceptor } from './shared/interceptor/error-interceptor';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ErrorInterceptor } from './shared/interceptor/error-interceptor';
     AppRoutingModule,
     HttpClientModule,
 
-    MainLayoutModule
+    MainLayoutModule,
+    AuthModule
 
   ],
   providers: [
