@@ -27,7 +27,7 @@ export class OrderListComponent implements OnInit {
 
   loading = true;
 
-  @ViewChild('table') orderListTable: Table;
+  @ViewChild('table', { static: true }) orderListTable: Table;
 
   constructor(public orderService: OrderService, private layout: MainLayoutService) {
     orderService.isEditMode$.subscribe(res => this.isEditMode = res);

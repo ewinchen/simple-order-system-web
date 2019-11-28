@@ -39,7 +39,7 @@ export class OrderActionComponent implements OnInit {
     }
   }
 
-  @ViewChild('filterPanel') filterPanel: OverlayPanel;
+  @ViewChild('filterPanel', { static: true }) filterPanel: OverlayPanel;
 
   constructor(
     private orderService: OrderService,

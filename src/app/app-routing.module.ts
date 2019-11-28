@@ -18,27 +18,27 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        loadChildren: './main/home/home.module#HomeModule',
+        loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule),
         data: { menuName: 'Home' }
       },
       {
         path: 'order',
-        loadChildren: './main/order/order.module#OrderModule',
+        loadChildren: () => import('./main/order/order.module').then(m => m.OrderModule),
         data: { menuName: 'Order' }
       },
       {
         path: 'report',
-        loadChildren: './main/report/report.module#ReportModule',
+        loadChildren: () => import('./main/report/report.module').then(m => m.ReportModule),
         data: { menuName: 'Report' }
       },
       {
         path: 'setting',
-        loadChildren: './main/setting/setting.module#SettingModule',
+        loadChildren: () => import('./main/setting/setting.module').then(m => m.SettingModule),
         data: { menuName: 'Setting' }
       },
       {
         path: 'system',
-        loadChildren: './main/system/system.module#SystemModule',
+        loadChildren: () => import('./main/system/system.module').then(m => m.SystemModule),
         data: { menuName: 'System' }
       },
 
@@ -51,11 +51,11 @@ const routes: Routes = [
   },
   {
     path: 'not-found',
-    loadChildren: './not-found/not-found.module#NotFoundModule'
+    loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule)
   },
   {
     path: '**',
-    loadChildren: './not-found/not-found.module#NotFoundModule'
+    loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule)
   },
 
 ];
