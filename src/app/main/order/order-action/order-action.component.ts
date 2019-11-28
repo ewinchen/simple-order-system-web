@@ -3,9 +3,9 @@ import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
 import { UtilService } from 'src/app/shared/service/util.service';
 import { Observable } from 'rxjs';
-import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ErrorEntity } from 'src/app/shared/http-interceptor/error-interceptor';
 
 @Component({
   selector: 'app-order-action',
@@ -87,7 +87,7 @@ export class OrderActionComponent implements OnInit {
           this.layoutService.isBlock$.next(false);
         },
         (err: ErrorEntity) => {
-          alert(err.errMsg);
+          alert(err.message);
           this.layoutService.isBlock$.next(false);
         },
       );
@@ -110,7 +110,7 @@ export class OrderActionComponent implements OnInit {
           this.layoutService.isBlock$.next(false);
         },
         (err: ErrorEntity) => {
-          alert(err.errMsg);
+          alert(err.message);
           this.layoutService.isBlock$.next(false);
 
         }
@@ -124,7 +124,7 @@ export class OrderActionComponent implements OnInit {
 
         },
         (err: ErrorEntity) => {
-          alert(err.errMsg);
+          alert(err.message);
           this.layoutService.isBlock$.next(false);
         }
       );

@@ -6,8 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MainLayoutModule } from './main/main-layout/main-layout.module';
-import { ErrorInterceptor } from './shared/interceptor/error-interceptor';
 import { AuthModule } from './auth/auth.module';
+import { httpInterceptorProviders } from './shared/http-interceptor';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { AuthModule } from './auth/auth.module';
 
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

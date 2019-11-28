@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,25 +8,29 @@ export class AuthService {
 
   user: any;
 
-  constructor() {
-    if (sessionStorage.getItem('isLogin') === '1') {
+  constructor(private http: HttpClient) {
+    if (localStorage.getItem('isLogin') === '1') {
       this.user = {
-        username: sessionStorage.getItem('username')
+        username: localStorage.getItem('username')
       };
     }
   }
 
-  login(): void {
-    sessionStorage.setItem('isLogin', '1');
-    sessionStorage.setItem('username', 'Edwin');
+  async login() {
+    const result = await this.http.post<any>('http://localhost:8080/api/login', {username: 'Edwin', password: 'Edwin'}).toPromise();
+    localStorage.setItem('isLogin', '1');
+    localStorage.setItem('username', 'Edwin');
+    localStorage.setItem('sessionId', result.data.sessionId);
     this.user = {
-      username: sessionStorage.getItem('username')
+      username: localStorage.getItem('username')
     };
   }
 
   logout(): void {
     this.user = null;
-    sessionStorage.removeItem('isLogin');
+    localStorage.removeItem('isLogin');
+    localStorage.removeItem('sessionId');
+    location.reload();
   }
 
 }

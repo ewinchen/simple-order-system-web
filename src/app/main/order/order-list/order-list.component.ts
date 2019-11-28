@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
-import { ErrorEntity } from 'src/app/shared/interceptor/error-interceptor';
+
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { ErrorEntity } from 'src/app/shared/http-interceptor/error-interceptor';
 
 @Component({
   selector: 'app-order-list',
@@ -55,7 +56,7 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrder($event.data.id).subscribe(
       () => this.layout.isBlock$.next(false),
       (err: ErrorEntity) => {
-        alert(err.errMsg);
+        alert(err.message);
         this.layout.isBlock$.next(false);
       }
     );
@@ -75,7 +76,7 @@ export class OrderListComponent implements OnInit {
       },
       (err: ErrorEntity) => {
         this.loading = false;
-        alert(err.errMsg);
+        alert(err.message);
       }
     );
   }
