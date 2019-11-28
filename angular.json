@@ -27,6 +27,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/simple-order-system-web",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -68,6 +69,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -150,5 +155,8 @@
       }
     }
   },
-  "defaultProject": "simple-order-system-web"
+  "defaultProject": "simple-order-system-web",
+  "cli": {
+    "analytics": "c20f86fd-6ded-410b-a461-8a05d9e225ae"
+  }
 }
