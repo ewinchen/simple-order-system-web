@@ -1,0 +1,12 @@
+{
+    "/proxy-backend": {
+      "target": "http://localhost:8098",
+      "secure": false,
+      "headers": {
+        "X-API-Key": "653832c4-5c82-4c99-82d3-18cf66465721"
+      },
+      "pathRewrite": {
+        "^/proxy-backend": ""
+      }
+    }
+  }

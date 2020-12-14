@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { OrderService } from '../order.service';
 import { MainLayoutService } from '../../main-layout/main-layout.service';
 import { UtilService } from 'src/app/shared/service/util.service';
@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { ErrorEntity } from 'src/app/shared/http-interceptor/error-interceptor';
+import { ApiService } from 'src/app/shared/service/api.service';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 @Component({
   selector: 'app-order-action',
@@ -14,11 +16,17 @@ import { ErrorEntity } from 'src/app/shared/http-interceptor/error-interceptor';
 })
 export class OrderActionComponent implements OnInit {
 
-  isEditMode: boolean;
-
-  orderDetail: any;
+  @Input() orderDetail: OrderDetailComponent;
 
   filterForm: FormGroup;
+
+  @Output() new = new EventEmitter();
+  @Output() save = new EventEmitter();
+  @Output() modify = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() submit = new EventEmitter();
+  @Output() unsubmit = new EventEmitter();
+
 
   get hasFilterValue() {
     let hasFilterValue = false;
@@ -31,10 +39,10 @@ export class OrderActionComponent implements OnInit {
   }
 
   get popupItems() {
-    if (!this.orderDetail) {
+    if (!this.orderDetail.orderForm) {
       return [];
     }
-    if (this.orderDetail.status === 'NEW') {
+    if (this.orderDetail.orderForm.get('status').value === 'NEW') {
       return [{ label: 'Delete', icon: 'pi pi-times' }];
     }
   }
@@ -42,99 +50,86 @@ export class OrderActionComponent implements OnInit {
   @ViewChild('filterPanel', { static: true }) filterPanel: OverlayPanel;
 
   constructor(
-    private orderService: OrderService,
+    public orderService: OrderService,
     private layoutService: MainLayoutService,
     private util: UtilService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private api: ApiService
   ) {
-    orderService.isEditMode$.subscribe(res => this.isEditMode = res);
-    orderService.orderDetail$.subscribe(res => this.orderDetail = res);
-    orderService.orderFilter$.subscribe(res => {
-      this.filterForm = fb.group(res);
-      this.filterForm.valueChanges.subscribe(value => {
-        for (const key of Object.keys(value)) {
-          if (value[key] === '') {
-            value[key] = null;
-          }
-        }
-        this.orderService.orderFilter$.next(value);
-      });
+
+    this.filterForm = fb.group({
+      beginDate: null,
+      endDate: null,
+      orderNo: null,
+      customer: null,
+      createBy: null,
+      status: 'NEW',
     });
+
   }
 
   ngOnInit() {
   }
 
   onNew() {
-    this.orderService.isEditMode$.next(true);
+    this.orderService.isEditMode = true;
     this.orderService.orderListSelected = undefined;
-    this.orderService.orderDetail$.next(
-      { orderNo: '', customer: '', createDate: '', goods: '', quantity: undefined, unit: '', createBy: '', submitBy: '', status: '' },
-    );
+    this.orderDetail.renderForm();
   }
 
   onModify() {
-    this.orderService.isEditMode$.next(true);
+    this.orderService.isEditMode = true;
   }
 
-  onCancel() {
+  async onCancel() {
+    // 修改状态
     this.layoutService.isBlock$.next(true);
     if (this.orderService.orderListSelected) {
-      // 修改状态
-      this.orderService.getOrder(this.orderService.orderListSelected.id).subscribe(
-        () => {
-          this.orderService.isEditMode$.next(false);
-          this.layoutService.isBlock$.next(false);
-        },
-        (err: ErrorEntity) => {
-          alert(err.message);
-          this.layoutService.isBlock$.next(false);
-        },
-      );
+      try {
+        this.orderDetail.renderForm(this.orderService.orderListSelected.id);
+        this.orderService.isEditMode = false;
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        this.layoutService.isBlock$.next(false);
+      }
+
     } else {
       // 新增状态
-      this.orderService.orderDetail$.next(null);
-      this.orderService.isEditMode$.next(false);
+      this.orderService.orderDetail = null;
+      this.orderService.isEditMode = false;
       this.layoutService.isBlock$.next(false);
     }
 
   }
 
-  onSave() {
+  async onSave() {
     this.layoutService.isBlock$.next(true);
-    if (!this.orderService.orderListSelected) {
-      // 新增
-      this.orderService.createOrder().subscribe(
-        () => {
-          this.orderService.isEditMode$.next(false);
-          this.layoutService.isBlock$.next(false);
-        },
-        (err: ErrorEntity) => {
-          alert(err.message);
-          this.layoutService.isBlock$.next(false);
-
+    try {
+      if (this.orderDetail.orderForm.get('id').value) {
+        const res = await this.orderService.updateOrder(this.orderDetail.orderForm.value);
+        if (res.code !== this.api.sucessCode) {
+          throw new Error(res.message)
         }
-      );
-    } else {
-      // 修改
-      this.orderService.updateOrder().subscribe(
-        () => {
-          this.orderService.isEditMode$.next(false);
-          this.layoutService.isBlock$.next(false);
-
-        },
-        (err: ErrorEntity) => {
-          alert(err.message);
-          this.layoutService.isBlock$.next(false);
+      } else {
+        const res = await this.orderService.createOrder(this.orderDetail.orderForm.value);
+        if (res.code !== this.api.sucessCode) {
+          throw new Error(res.message)
         }
-      );
+      }
+      this.onCancel();
+
+    } catch (error) {
+      alert(error.message)
+    } finally {
+      this.layoutService.isBlock$.next(false);
     }
   }
 
   onSubmit() {
     this.layoutService.isBlock$.next(true);
     setTimeout(() => {
-      this.orderDetail.status = 'SUBMITTED';
+      this.orderDetail.orderForm.get('status').setValue('SUBMITTED');
       this.layoutService.isBlock$.next(false);
     }, 200);
   }
@@ -142,7 +137,7 @@ export class OrderActionComponent implements OnInit {
   onUnsubmit() {
     this.layoutService.isBlock$.next(true);
     setTimeout(() => {
-      this.orderDetail.status = 'NEW';
+      this.orderDetail.orderForm.get('status').setValue('NEW');
       this.layoutService.isBlock$.next(false);
     }, 200);
   }
@@ -154,72 +149,72 @@ export class OrderActionComponent implements OnInit {
   onSearchOrder() {
     this.orderService.orderSearchEmitter$.next(true);
     this.orderService.orderListSelected = null;
-    this.orderService.orderDetail$.next(undefined);
+    this.orderService.orderDetail = undefined;
     this.filterPanel.hide();
   }
 
   handleBtnView(buttonName) {
     switch (buttonName) {
       case 'New':
-        if (this.isEditMode) {
+        if (this.orderService.isEditMode) {
           return 'hidden';
         }
         return 'visible';
       case 'Modify':
-        if (!this.orderDetail) {
+        if (!this.orderDetail.orderForm) {
           return 'hidden';
         }
-        if (this.isEditMode) {
+        if (this.orderService.isEditMode) {
           return 'hidden';
         }
         return 'visible';
 
       case 'Cancel':
-        if (!this.isEditMode) {
+        if (!this.orderService.isEditMode) {
           return 'hidden';
         }
         return 'visible';
 
       case 'Save':
-        if (!this.isEditMode) {
+        if (!this.orderService.isEditMode) {
           return 'hidden';
         }
         return 'visible';
       case 'Submit':
-        if (!this.orderDetail) {
+        if (!this.orderDetail.orderForm) {
           return 'hidden';
         }
-        if (this.isEditMode) {
+        if (this.orderService.isEditMode) {
           return 'hidden';
         }
-        if (this.orderDetail.status === 'SUBMITTED') {
+        if (this.orderDetail.orderForm.get('status').value === 'SUBMITTED') {
           return 'hidden';
         }
         return 'visible';
 
       case 'Unsubmit':
-        if (!this.orderDetail) {
+        if (!this.orderDetail.orderForm) {
           return 'hidden';
         }
-        if (this.isEditMode) {
+        if (this.orderService.isEditMode) {
           return 'hidden';
         }
-        if (this.orderDetail.status !== 'SUBMITTED') {
+        if (this.orderDetail.orderForm.get('status').value !== 'SUBMITTED') {
           return 'hidden';
         }
         return 'visible';
 
       case 'Search':
-        if (this.isEditMode) {
+        if (this.orderService.isEditMode) {
           return 'hidden';
         }
         return 'visible';
 
       case 'Popup':
-        if (!this.orderDetail) {
+        if (!this.orderDetail.orderForm) {
           return 'hidden';
         }
-        if (this.isEditMode) {
+        if (this.orderService.isEditMode) {
           return 'hidden';
         }
         return 'visible';

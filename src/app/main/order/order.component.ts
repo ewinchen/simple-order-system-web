@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrderService } from './order.service';
 
 @Component({
@@ -14,9 +15,9 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.orderService.isEditMode$.next(false);
-    this.orderService.orderList$.next(undefined);
-    this.orderService.orderDetail$.next(undefined);
+    this.orderService.isEditMode = false;
+    this.orderService.orderList = [];
+    this.orderService.orderDetail = undefined;
     this.orderService.orderListSelected = undefined;
   }
 }

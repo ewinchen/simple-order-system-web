@@ -1,42 +1,42 @@
 <div *ngIf="orderForm" [formGroup]="orderForm" class="ui-g ui-fluid">
   <div class="ui-g-4">
     <span>Order No.</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="orderNo" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="orderNo" />
   </div>
 
   <div class="ui-g-4">
     <span>Order Date</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="createDate" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="createDate" />
   </div>
 
   <div class="ui-g-4">
     <span>Customer</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="customer" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="customer" />
   </div>
 
   <div class="ui-g-4">
     <span>Goods</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="goods" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="goods" />
   </div>
 
   <div class="ui-g-4">
     <span>Quantity</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="quantity" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="quantity" />
   </div>
   <div class="ui-g-4">
     <span>Unit</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="unit" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="unit" />
   </div>
   <div class="ui-g-4">
     <span>Creator</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="createBy" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="createBy" />
   </div>
   <div class="ui-g-4">
     <span>Submitter</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="submitBy" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="submitBy" />
   </div>
   <div class="ui-g-4">
     <span>Status</span>
-    <input type="text" pInputText [readonly]="!isEditMode" formControlName="status" />
+    <input type="text" pInputText [readonly]="!this.orderService.isEditMode" formControlName="status" />
   </div>
 </div>

@@ -1,3 +1,3 @@
-<app-order-action></app-order-action>
-<app-order-list></app-order-list>
-<app-order-detail></app-order-detail>
+<app-order-action #action [orderDetail]="detail"></app-order-action>
+<app-order-list #list [orderAction]="action" [orderDetail]="detail"></app-order-list>
+<app-order-detail #detail></app-order-detail>

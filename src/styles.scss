@@ -14,3 +14,10 @@ body .ui-widget {
 body .ui-widget-overlay {
   background-color: rgba(0, 0, 0, 0) !important;
 }
+
+.disabled {
+  color: #aaaaaa;
+  cursor: default;
+  pointer-events: none;
+  text-decoration: none;
+}
