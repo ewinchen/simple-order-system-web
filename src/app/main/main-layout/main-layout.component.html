@@ -1,11 +1,12 @@
-<div id="header" class="ui-g" style="border-bottom: 1px grey solid; margin-bottom: 5px;;">
-  <app-menu class="ui-g-5"></app-menu>
-  <app-breadcrumb class="ui-g-4"></app-breadcrumb>
-  <app-user-snapshot class="ui-g-3"></app-user-snapshot>
-</div>
-
-<div #content id="content">
-  <router-outlet></router-outlet>
+<div id="main">
+  <div id="header">
+    <app-menu></app-menu>
+    <app-breadcrumb></app-breadcrumb>
+  </div>
+  
+  <div #content id="content">
+    <router-outlet></router-outlet>
+  </div>
 </div>
 
 <p-blockUI [blocked]="isBlock">

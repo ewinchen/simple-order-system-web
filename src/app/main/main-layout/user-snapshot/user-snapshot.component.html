@@ -1,5 +1,4 @@
-<div style="text-align: right; padding-top: 4px;">
-  {{authService.user.username}}
-
-  <button pButton icon="pi pi-sign-out" style="margin-left:.25em" (click)="logout()"></button>
+<div class="p-d-flex p-ai-center">
+  <span>{{authService.user.username}}</span>
+  <button pButton pRipple class="p-button-text" icon="pi pi-sign-out" (click)="logout()"></button>
 </div>

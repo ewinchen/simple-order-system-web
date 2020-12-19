@@ -1,6 +1,8 @@
 <p-menubar [model]="items">
-  <div>
-    <!-- <app-breadcrumb></app-breadcrumb> -->
-    <!-- <app-user-snapshot></app-user-snapshot> -->
-  </div>
+  <ng-template pTemplate="start">
+    <img src="favicon.ico" height="20" class="p-mr-2">
+  </ng-template>
+  <ng-template pTemplate="end">
+    <app-user-snapshot></app-user-snapshot>
+  </ng-template>
 </p-menubar>

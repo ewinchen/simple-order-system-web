@@ -24,6 +24,36 @@ export class MenuComponent implements OnInit {
       {
         label: 'System', routerLink: ['/system']
       },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
+      {
+        label: 'System', routerLink: ['/system']
+      },
 
     ];
   }
